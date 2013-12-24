@@ -1,0 +1,11 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=4809
+
+Sneak is a Vim plugin that enables you to move to any location specified by two characters. It works across multiple lines; with operators (including repeat .); and in visual mode. Move to the next or previous match via ; or ,. Move to the nth match by prefixing ; or , with a [count].
+
+The plugin chooses sane defaults, which are easily changed via <Plug> mappings. See :help sneak for options and details.
+
+Latest version and full details are here: 
+
+https://github.com/justinmk/vim-sneak
+
+
