@@ -28,7 +28,6 @@ func! sneak#debug#report()
   redir END
   let vimversion = join(split(vimversion, "\n")[0:3], "\n")
   redir => output
-    " silent exec 'echo sneak#state = '
     call s:dbgfeat('autocmd')
     call s:dbgflag('&magic')
     call s:dbgflag('&buftype')
@@ -36,18 +35,20 @@ func! sneak#debug#report()
     call s:dbgflag('&ignorecase')
     call s:dbgflag('&smartcase')
     call s:dbgflag('&background')
+    call s:dbgflag('&keymap')
     call s:dbgflag('g:mapleader')
     silent echo ""
     call s:dbgfunc("sneak#to")
     call s:dbgfunc("sneak#rpt")
     call s:dbgfunc("sneak#search#new")
     call s:dbgfunc("sneak#hl#removehl")
+    call s:dbgfunc("sneak#util#echo")
     silent echo ""
-    echo "sneak#opt: ".string(sneak#opt())
+    echo "sneak#opt: ".string(g:sneak#opt)
     silent exec 'verbose map f | map F | map t | map T | map s | map S | map z | map Z | map ; '
   redir END
   enew
   silent put=vimversion
   silent put=output
-  "set nomodified
+  "setlocal nomodified
 endf

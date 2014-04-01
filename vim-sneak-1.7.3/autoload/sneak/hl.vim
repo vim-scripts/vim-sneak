@@ -7,10 +7,17 @@ endf
 " gets the 'links to' value of the specified highlight group, if any.
 "   https://github.com/osyo-manga/vim-over/blob/d8819448fc4074342abd5cb6cb2f0fff47b7aa22/autoload/over/command_line.vim#L225
 func! sneak#hl#links_to(hlgroup)
-  redir => hl
-  exec 'silent highlight '.a:hlgroup
-  redir END
-  return substitute(matchstr(hl, 'links to \zs.*'), '\s', '', 'g')
+  redir => hl | exec 'silent highlight '.a:hlgroup | redir END
+  let s = substitute(matchstr(hl, 'links to \zs.*'), '\s', '', 'g')
+  return empty(s) ? 'NONE' : s
+endf
+
+func! sneak#hl#is_valid(hlgroup) "avoid junk like 'Cursor xxx cleared'
+  if !hlexists(a:hlgroup)
+    return 0
+  endif
+  redir => hl | exec 'silent highlight '.a:hlgroup | redir END
+  return !empty(matchstr(hl, '\%(.*xxx\)\?\%(.*cleared\)\?\s*\zs.*'))
 endf
 
 if 0 == hlID("SneakPluginTarget")
@@ -30,5 +37,15 @@ if 0 == hlID("SneakPluginScope")
 endif
 
 if 0 == hlID("SneakStreakTarget")
-  hi SneakStreakTarget guibg=magenta guifg=white gui=bold ctermbg=magenta ctermfg=white cterm=bold
+  highlight SneakStreakTarget guibg=magenta guifg=white gui=bold ctermbg=magenta ctermfg=white cterm=bold
+endif
+
+if 0 == hlID("SneakStreakStatusLine")
+  highlight link SneakStreakStatusLine SneakStreakTarget
+endif
+
+if sneak#hl#is_valid('Cursor')
+  highlight link SneakStreakCursor Cursor
+else
+  highlight link SneakStreakCursor SneakPluginScope
 endif
